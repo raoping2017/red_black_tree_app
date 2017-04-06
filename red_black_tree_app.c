@@ -87,6 +87,12 @@ void my_free(struct mynode *node)
 	}
 }
 
+static float get_more_sec_time(struct timeval start, struct timeval end)
+{
+	float ftime =  (end.tv_sec-start.tv_sec) + (end.tv_usec-start.tv_usec)/1000000.0;
+	return ftime;
+}
+
 int main()
 {
 
@@ -105,7 +111,6 @@ int main()
 
 	/* *insert */
 	int i = 0;
-	printf("insert node from 1 to NUM_NODES(32): \n");
 	for (; i < NUM_NODES; i++)
 	{
 		mn[i] = (struct mynode *)malloc(sizeof(struct mynode));
@@ -113,9 +118,8 @@ int main()
 		sprintf(mn[i]->string, "%d", i);
 		my_insert(&mytree, mn[i]);
 	}
-
 	gettimeofday( &end, NULL );
-	printf("insert %d figure run time: %d.%06d\n", NUM_NODES, (end.tv_sec-start.tv_sec), (end.tv_usec-start.tv_usec));
+	printf("insert %d figure run time:%f s.\n", NUM_NODES, get_more_sec_time(start, end));
 
 
 
@@ -132,7 +136,7 @@ int main()
 	if (data)
 	{
 		gettimeofday( &end, NULL );
-		printf("get %s data run time: %d.%06d\n", data->string,(end.tv_sec-start.tv_sec), (end.tv_usec-start.tv_usec));
+		printf("get one data(%s) from red_black_tree run time: %d.%06d s.\n", data->string,(end.tv_sec-start.tv_sec), (end.tv_usec-start.tv_usec));
 	}
 
 	/* *delete */
